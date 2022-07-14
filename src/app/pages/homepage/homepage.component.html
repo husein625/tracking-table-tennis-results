@@ -26,6 +26,8 @@
             </div>
             <button class="btn btn-success" (click)="addPlayer()">Add</button>
         </div>
+
+        <!-- LIST OF PLAYERS -->
         <div class="col-lg-5 col-sm-12 m-sm-2 p-3 shadow box">
             <h2>List of players</h2>
             <div *ngFor="let player of playersList; let i = index;">
@@ -38,5 +40,140 @@
                 </ul>
             </div>
         </div>
+
+        <!-- CREATE MATCH  -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-sm-12 m-sm-2 p-3 shadow box">
+                <div class="d-flex justify-content-center">
+                    <h1>Create Match</h1>
+                </div>
+                <div class="row">
+                    <div *ngIf="pickedPlayers.length == 2" class="alert alert-warning p-2 fade show" role="alert">
+                        <span>
+                            <strong>You can only pick two players!!</strong> Remove picked player to choose another one
+                            :)
+                        </span>
+                    </div>
+                    <div class="col-12">
+                        <h2>Pick Players</h2>
+                        <div *ngFor="let player of playersList; let i = index;">
+                            <ul>
+                                <li class="d-flex justify-content-between"
+                                    *ngIf="player.first_name && player.last_name">
+                                    <span>{{player.first_name}} {{player.last_name}}</span>
+                                    <button type="button" class="btn btn-outline-success" (click)="togglePlayer(player)"
+                                        [disabled]="pickedPlayers.length >= 2"
+                                        *ngIf="!pickedPlayers.includes(player)">Add</button>
+                                    <button type="button" class="btn btn-danger" (click)="togglePlayer(player)"
+                                        *ngIf="pickedPlayers.includes(player)">Remove</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <h2>Match</h2>
+                        <div class="col" *ngIf="pickedPlayers">
+                            <div class="row">
+                                <span><b>Player 1:</b> {{pickedPlayers[0]?.first_name}}
+                                    {{pickedPlayers[0]?.last_name}}</span>
+                            </div>
+                            <div class="row">
+                                <span><b>Player 2:</b> {{pickedPlayers[1]?.first_name}}
+                                    {{pickedPlayers[1]?.last_name}}</span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <button class="btn btn-success w-50" *ngIf="Matches.length == 0"
+                                [disabled]="pickedPlayers.length < 2" (click)="addMatch()">Start New Match</button>
+                        </div>
+
+                        <!-- MATCH FORM -->
+                        <div [formGroup]="matchForm">
+                            <div formArrayName="matches" *ngFor="let d of Matches.controls; let i=index">
+                                <div [formGroupName]="i">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <div class="row"> <span>SET</span>
+                                            </div>
+                                            <div class="row"> <span><b>Player 1:</b> {{pickedPlayers[0]?.first_name}}
+                                                    {{pickedPlayers[0]?.last_name}}</span>
+                                            </div>
+                                            <div class="row pt-4"> <span><b>Player 2:</b>
+                                                    {{pickedPlayers[1]?.first_name}}
+                                                    {{pickedPlayers[1]?.last_name}}</span>
+                                            </div>
+                                        </div>
+                                        <!-- FIRST SET -->
+                                        <div class="col-2">
+                                            <div class="col form-group">
+                                                <label>1</label>
+                                                <input type="text" class="form-control" name="first_player_1"
+                                                    formControlName="first_player_1">
+                                            </div>
+                                            <div class="col form-group">
+                                                <input type="text" class="form-control" name="second_player_1"
+                                                    formControlName="second_player_1">
+                                            </div>
+                                        </div>
+                                        <!-- SECOND SET -->
+                                        <div class="col-2">
+                                            <div class="col form-group">
+                                                <label>2</label>
+                                                <input type="text" class="form-control" name="first_player_2"
+                                                    formControlName="first_player_2">
+                                            </div>
+                                            <div class="col form-group">
+                                                <input type="text" class="form-control" name="second_player_2"
+                                                    formControlName="second_player_2">
+                                            </div>
+                                        </div>
+                                        <!-- THIRD SET -->
+                                        <div class="col-2">
+                                            <div class="col form-group">
+                                                <label>3</label>
+                                                <input type="text" class="form-control" name="first_player_3"
+                                                    formControlName="first_player_3">
+                                            </div>
+                                            <div class="col form-group">
+                                                <input type="text" class="form-control" name="second_player_3"
+                                                    formControlName="second_player_3">
+                                            </div>
+                                        </div>
+                                        <!-- FOURTH SET -->
+                                        <div class="col-2">
+                                            <div class="col form-group">
+                                                <label>4</label>
+                                                <input type="text" class="form-control" name="first_player_4"
+                                                    formControlName="first_player_4">
+                                            </div>
+                                            <div class="col form-group">
+                                                <input type="text" class="form-control" name="second_player_4"
+                                                    formControlName="second_player_4">
+                                            </div>
+                                        </div>
+                                        <!-- FIFTH SET -->
+                                        <div class="col-2">
+                                            <div class="col form-group">
+                                                <label>5</label>
+                                                <input type="text" class="form-control" name="first_player_5"
+                                                    formControlName="first_player_5">
+                                            </div>
+                                            <div class="col form-group">
+                                                <input type="text" class="form-control" name="second_player_5"
+                                                    formControlName="second_player_5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <button class="btn btn-success w-50 mt-2" *ngIf="Matches.length == 1"
+                                (click)="finishMatch()">Finish Match</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>

@@ -14,10 +14,15 @@ export class HomepageComponent implements OnInit {
   form: FormGroup;
   playerForm: FormGroup;
   players: FormArray;
+  matchForm: FormGroup;
+  matches: FormArray;
+  // matchesList: FormArray;
 
   //Public
-  public playersList: any[];
-  public playerOverview: { first_name: string, last_name: string };
+  public playersList: IUser[];
+  public playerOverview: IUser;
+  public pickedPlayers: Array<IUser> = [];
+  public matchesList: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,10 +36,13 @@ export class HomepageComponent implements OnInit {
     this.playerForm = new FormGroup({
       players: this.formBuilder.array([]),
     });
+
+    this.matchForm = new FormGroup({
+      matches: this.formBuilder.array([]),
+    });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   createItem(): FormGroup {
     return this.formBuilder.group({
@@ -43,13 +51,26 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  createMatch(): FormGroup {
+    return this.formBuilder.group({
+      first_player_1: '',
+      first_player_2: '',
+      first_player_3: '',
+      first_player_4: '',
+      first_player_5: '',
+
+      second_player_1: '',
+      second_player_2: '',
+      second_player_3: '',
+      second_player_4: '',
+      second_player_5: '',
+    });
+  }
+
   addPlayer(): void {
     this.players = this.playerForm.get('players') as FormArray;
     this.players.push(this.createItem());
-
     this.playersList = this.playerForm.value.players;
-    console.log('items', this.players.value);
-    console.log('playersList', this.playersList)
   }
 
   deletePlayer(index: any) {
@@ -61,9 +82,47 @@ export class HomepageComponent implements OnInit {
     return this.playerForm.get('players') as FormArray;
   }
 
+  get Matches() {
+    return this.matchForm.get('matches') as FormArray;
+  }
+
+  addMatch(): void {
+    this.matches = this.matchForm.get('matches') as FormArray;
+    this.matches.push(this.createMatch());
+    if(this.Matches.length > 1){
+      this.Matches.removeAt(0);
+    }
+  }
+
+  finishMatch(){
+    this.matchesList = this.matchesList.concat(this.matches.value);
+    this.matches.removeAt(0);
+    this.pickedPlayers = [];
+  }
+
   openDialogOverview(player: IUser): void {
     const ref = this.dialog.open(OverviewModalComponent);
     ref.componentInstance.selectedUser = player;
+  }
+
+  togglePlayer(user: IUser) {
+    let checker = false;
+
+    console.log('Picked',this.pickedPlayers)
+    this.pickedPlayers.forEach((obj) => {
+      if (obj === user) {
+        checker = true;
+      }
+    });
+
+    if (checker) {
+      const index: number = this.pickedPlayers.indexOf(user);
+      if (index !== -1) {
+        this.pickedPlayers.splice(index, 1);
+      }
+    } else {
+      this.pickedPlayers.push(user);
+    }
   }
 
   async finish(form: any): Promise<void> {
