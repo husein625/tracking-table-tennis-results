@@ -1,0 +1,22 @@
+.main {
+    background-color: #F1F7FF;
+    overflow-x: hidden;
+
+    .box{
+        background-color: white;
+        border-radius: 16px;
+    }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+    .btn-delete {
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+}

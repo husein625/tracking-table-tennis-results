@@ -1,0 +1,42 @@
+<div class="w-100 vh-100 main p-4">
+    <div class="row justify-content-between">
+        <div class="col-lg-5 col-sm-12 m-sm-2 p-3 shadow box">
+            <h2>Add new player</h2>
+            <div [formGroup]="playerForm">
+                <div formArrayName="players" *ngFor="let d of Players.controls; let i=index">
+                    <div [formGroupName]="i">
+                        <!-- FIRST NAME & LAST NAME -->
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" name="first_name" formControlName="first_name">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" name="last_name" formControlName="last_name">
+                            </div>
+                            <div class="col-sm-4 form-group pt-3">
+                                <button class="btn btn-delete mt-1" (click)="deletePlayer(i)" type="button"><img
+                                        src="assets/icons/close-icon.png" alt="Delete button">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success" (click)="addPlayer()">Add</button>
+        </div>
+        <div class="col-lg-5 col-sm-12 m-sm-2 p-3 shadow box">
+            <h2>List of players</h2>
+            <div *ngFor="let player of playersList; let i = index;">
+                <ul>
+                    <li class="d-flex justify-content-between" *ngIf="player.first_name && player.last_name">
+                        <span>{{player.first_name}} {{player.last_name}}</span>
+                        <button type="button" class="btn btn-outline-info"
+                            (click)="openDialogOverview(player)">Overview</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
