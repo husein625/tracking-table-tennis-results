@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { IUser } from 'src/app/interfaces/User';
+import { PLAYERS } from 'src/app/services/mock-data/players';
 import { OverviewModalComponent } from '../../components/overview-modal/overview-modal.component';
 
 @Component({
@@ -11,15 +12,13 @@ import { OverviewModalComponent } from '../../components/overview-modal/overview
 })
 export class HomepageComponent implements OnInit {
   //Form
-  form: FormGroup;
   playerForm: FormGroup;
   players: FormArray;
   matchForm: FormGroup;
   matches: FormArray;
-  // matchesList: FormArray;
 
   //Public
-  public playersList: IUser[];
+  public playersList: IUser[] = [];
   public playerOverview: IUser;
   public pickedPlayers: Array<IUser> = [];
   public matchesList: any[] = [];
@@ -28,10 +27,6 @@ export class HomepageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
   ) {
-    this.form = this.formBuilder.group({
-      first_name: [null, [Validators.required, Validators.maxLength(128)]],
-      last_name: [null, [Validators.required, Validators.maxLength(128)]],
-    });
 
     this.playerForm = new FormGroup({
       players: this.formBuilder.array([]),
@@ -42,40 +37,43 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.playersList = this.playersList.concat(PLAYERS);
+   }
 
-  createItem(): FormGroup {
+  createPlayer(): FormGroup {
     return this.formBuilder.group({
-      first_name: '',
-      last_name: '',
+      first_name: [null, [Validators.required, Validators.maxLength(128)]],
+      last_name: [null, [Validators.required, Validators.maxLength(128)]],
     });
   }
 
   createMatch(): FormGroup {
     return this.formBuilder.group({
-      first_player_1: '',
-      first_player_2: '',
-      first_player_3: '',
-      first_player_4: '',
-      first_player_5: '',
+      first_player: this.pickedPlayers[0],
+      first_player_1: [null, [Validators.required, Validators.maxLength(128)]],
+      first_player_2: [null, [Validators.required, Validators.maxLength(128)]],
+      first_player_3: [null, [Validators.required, Validators.maxLength(128)]],
+      first_player_4: [null, [Validators.required, Validators.maxLength(128)]],
+      first_player_5: [null, [Validators.required, Validators.maxLength(128)]],
 
-      second_player_1: '',
-      second_player_2: '',
-      second_player_3: '',
-      second_player_4: '',
-      second_player_5: '',
+      second_player: this.pickedPlayers[1],
+      second_player_1: [null, [Validators.required, Validators.maxLength(128)]],
+      second_player_2: [null, [Validators.required, Validators.maxLength(128)]],
+      second_player_3: [null, [Validators.required, Validators.maxLength(128)]],
+      second_player_4: [null, [Validators.required, Validators.maxLength(128)]],
+      second_player_5: [null, [Validators.required, Validators.maxLength(128)]],
     });
   }
 
   addPlayer(): void {
     this.players = this.playerForm.get('players') as FormArray;
-    this.players.push(this.createItem());
-    this.playersList = this.playerForm.value.players;
+    this.players.push(this.createPlayer());
+    this.playersList = this.playersList.concat(this.playerForm.value.players);
   }
 
-  deletePlayer(index: any) {
+  deletePlayerRow(index: any) {
     this.Players.removeAt(index);
-    this.playersList.splice(index, 1);
   }
 
   get Players() {

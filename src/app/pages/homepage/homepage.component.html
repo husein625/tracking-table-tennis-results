@@ -1,4 +1,7 @@
 <div class="w-100 vh-100 main p-4">
+    <div class="d-flex justify-content-center">
+        <h1>Tracking Table Tennis Results</h1>
+    </div>
     <div class="row justify-content-between">
         <div class="col-lg-5 col-sm-12 m-sm-2 p-3 shadow box">
             <h2>Add new player</h2>
@@ -16,7 +19,7 @@
                                 <input type="text" class="form-control" name="last_name" formControlName="last_name">
                             </div>
                             <div class="col-sm-4 form-group pt-3">
-                                <button class="btn btn-delete mt-1" (click)="deletePlayer(i)" type="button"><img
+                                <button class="btn btn-delete mt-1" (click)="deletePlayerRow(i)" type="button"><img
                                         src="assets/icons/close-icon.png" alt="Delete button">
                                 </button>
                             </div>
@@ -24,12 +27,13 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-success" (click)="addPlayer()">Add</button>
+            <button class="btn btn-success" [disabled]="playerForm.invalid" (click)="addPlayer()">Add</button>
         </div>
 
         <!-- LIST OF PLAYERS -->
         <div class="col-lg-5 col-sm-12 m-sm-2 p-3 shadow box">
             <h2>List of players</h2>
+            total sets won -- TO DO
             <div *ngFor="let player of playersList; let i = index;">
                 <ul>
                     <li class="d-flex justify-content-between" *ngIf="player.first_name && player.last_name">
@@ -51,7 +55,6 @@
                     <div *ngIf="pickedPlayers.length == 2" class="alert alert-warning p-2 fade show" role="alert">
                         <span>
                             <strong>You can only pick two players!!</strong> Remove picked player to choose another one
-                            :)
                         </span>
                     </div>
                     <div class="col-12">
@@ -169,11 +172,43 @@
                             </div>
                         </div>
                         <div class="row justify-content-center">
-                            <button class="btn btn-success w-50 mt-2" *ngIf="Matches.length == 1"
+                            <button class="btn btn-success w-50 mt-2" *ngIf="Matches.length == 1" [disabled]="matchForm.invalid"
                                 (click)="finishMatch()">Finish Match</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+        <div class="row justify-content-between">
+        <!-- LIST OF PLAYERS -->
+        <div class="col-lg-5 col-sm-12 m-sm-2 p-3 shadow box">
+            <h2>List of matches</h2>
+            <div *ngFor="let match of matchesList; let i = index;">
+                <ul>
+                    <li class="d-flex justify-content-between">
+                        <span>{{match.first_player.first_name}} {{match.first_player.last_name}} - {{match.second_player.first_name}} {{match.second_player.last_name}}</span>
+                        <button type="button" class="btn btn-outline-info"
+                            (click)="openDialogOverview(match)">Overview</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+            <!-- INSTRUCTIONS -->
+            <div class="col-lg-5 col-sm-12 m-sm-2 p-3 shadow box">
+                <h2>Instructions</h2>
+                <div *ngFor="let player of matchesList; let i = index;">
+                    <ul>
+                        <!-- <li class="d-flex justify-content-between">
+                            <span>{{player.first_player.first_name}} {{player.first_player.last_name}} - {{player.second_player.first_name}} {{player.second_player.last_name}}</span>
+                            <button type="button" class="btn btn-outline-info"
+                                (click)="openDialogOverview(player)">Overview</button>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
