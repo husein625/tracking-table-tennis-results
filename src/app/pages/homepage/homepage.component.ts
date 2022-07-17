@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 import { IUser } from 'src/app/interfaces/User';
 import { PLAYERS } from 'src/app/services/mock-data/players';
 import { OverviewModalComponent } from '../../components/overview-modal/overview-modal.component';
@@ -22,8 +23,13 @@ export class HomepageComponent implements OnInit {
   public pickedPlayers: Array<IUser> = [];
   public matchesList: any[] = [];
   public matchStart = false;
-  public errorMessages: any[] = [];
+  public errorMessages: any;
   public buttonDisabled: boolean;
+  public winMatches: any[] = [];
+  public winsPlayer1: number = 0;
+  public winsPlayer2: number = 0;
+  public file: any;
+  public fileUrl: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,6 +43,7 @@ export class HomepageComponent implements OnInit {
       first_player_3: [null, [Validators.required, Validators.maxLength(128)]],
       first_player_4: [null, [Validators.required, Validators.maxLength(128)]],
       first_player_5: [null, [Validators.required, Validators.maxLength(128)]],
+      first_player_win: [false],
 
       second_player: [null, [Validators.maxLength(128)]],
       second_player_1: [null, [Validators.required, Validators.maxLength(128)]],
@@ -44,6 +51,7 @@ export class HomepageComponent implements OnInit {
       second_player_3: [null, [Validators.required, Validators.maxLength(128)]],
       second_player_4: [null, [Validators.required, Validators.maxLength(128)]],
       second_player_5: [null, [Validators.required, Validators.maxLength(128)]],
+      second_player_win: [false],
     });
 
     this.playerForm = new FormGroup({
@@ -57,57 +65,42 @@ export class HomepageComponent implements OnInit {
     this.form.valueChanges.subscribe(x => {
       let errorMessage;
 
-      //FIRST CASE - PLAYER 1
+      //FIRST CASE - SET 1
       if (x.first_player_1 == 10 && x.second_player_1 == 10) {
-        console.log('error 10:10');
-        errorMessage = 'error 10:10';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 10:10 in SET 1';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.first_player_1 - 1 == x.second_player_1) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 1';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.first_player_1 - x.second_player_1 > 2) {
-        console.log('error more than two result');
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 1';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
-      else if (x.first_player_1 > 11 && x.first_player_1 - x.second_player_1 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
-      }
-
-      else if (x.second_player_1 > 11 && x.second_player_1 - x.first_player_1 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
-      }
 
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.first_player_1 == x.second_player_1) {
-        console.log('error same values')
-        errorMessage = 'error same values';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error same values in SET 1';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
-      //SECOND CASE - PLAYER 1
+      //SECOND CASE - SET 1
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.second_player_1 - 1 == x.first_player_1) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 1';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.second_player_1 - x.first_player_1 > 2) {
-        console.log('error more than two result')
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 1';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
@@ -115,117 +108,106 @@ export class HomepageComponent implements OnInit {
         this.buttonDisabled = true;
       }
 
+      else if (x.first_player_1 > 11 && x.first_player_1 - x.second_player_1 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
 
-      //FIRST CASE - PLAYER 2
+      else if (x.second_player_1 > 11 && x.second_player_1 - x.first_player_1 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
+
+      //FIRST CASE - SET 2
       else if (x.first_player_2 == 10 && x.second_player_2 == 10) {
-        console.log('error 10:10');
-        errorMessage = 'error 10:10';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 10:10 in SET 2';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.first_player_2 - 1 == x.second_player_2) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 2';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.first_player_2 - x.second_player_2 > 2) {
-        console.log('error more than two result');
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 2';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
-      }
-
-      else if (x.first_player_2 > 11 && x.first_player_2 - x.second_player_2 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
-      }
-
-      else if (x.second_player_2 > 11 && x.second_player_2 - x.first_player_2 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
       }
 
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.first_player_2 == x.second_player_2) {
-        console.log('error same values')
-        errorMessage = 'error same values';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error same values in SET 2';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
-      //SECOND CASE - PLAYER 2
+      //SECOND CASE - SET 2
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.second_player_2 - 1 == x.first_player_2) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 2';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.second_player_2 - x.first_player_2 > 2) {
-        console.log('error more than two result')
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 2';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_2 <= 10 && x.second_player_2 <= 10) {
         this.buttonDisabled = true;
       }
+      
+      else if (x.first_player_2 > 11 && x.first_player_2 - x.second_player_2 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
+
+      else if (x.second_player_2 > 11 && x.second_player_2 - x.first_player_2 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
 
 
-      //FIRST CASE - PLAYER 3
+
+      //FIRST CASE - SET 3
       else if (x.first_player_3 == 10 && x.second_player_3 == 10) {
-        console.log('error 10:10');
-        errorMessage = 'error 10:10';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 10:10 in SET 3';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.first_player_3 - 1 == x.second_player_3) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 3';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.first_player_3 - x.second_player_3 > 2) {
-        console.log('error more than two result');
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 3';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
-      else if (x.first_player_3 > 11 && x.first_player_3 - x.second_player_3 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
-      }
-
-      else if (x.second_player_3 > 11 && x.second_player_3 - x.first_player_3 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
-      }
 
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.first_player_3 == x.second_player_3) {
-        console.log('error same values')
-        errorMessage = 'error same values';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error same values in SET 3';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
-      //SECOND CASE - PLAYER 3
+      //SECOND CASE - SET 3
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.second_player_3 - 1 == x.first_player_3) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 3';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.second_player_3 - x.first_player_3 > 2) {
-        console.log('error more than two result')
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 3';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
@@ -233,58 +215,52 @@ export class HomepageComponent implements OnInit {
         this.buttonDisabled = true;
       }
 
+      else if (x.first_player_3 > 11 && x.first_player_3 - x.second_player_3 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
 
-      //FIRST CASE - PLAYER 4
+      else if (x.second_player_3 > 11 && x.second_player_3 - x.first_player_3 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
+
+
+      //FIRST CASE - SET 4
       else if (x.first_player_4 == 10 && x.second_player_4 == 10) {
-        console.log('error 10:10');
-        errorMessage = 'error 10:10';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 10:10 in SET 4';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.first_player_4 - 1 == x.second_player_4) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 4';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.first_player_4 - x.second_player_4 > 2) {
-        console.log('error more than two result');
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 4';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
-      }
-
-      else if (x.first_player_4 > 11 && x.first_player_4 - x.second_player_4 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
-      }
-
-      else if (x.second_player_4 > 11 && x.second_player_4 - x.first_player_4 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
       }
 
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.first_player_4 == x.second_player_4) {
-        console.log('error same values')
-        errorMessage = 'error same values';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error same values in SET 4';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
-      //SECOND CASE - PLAYER 4
+      //SECOND CASE - SET 4
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.second_player_4 - 1 == x.first_player_4) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 4';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.second_player_4 - x.first_player_4 > 2) {
-        console.log('error more than two result')
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 4';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
@@ -292,58 +268,53 @@ export class HomepageComponent implements OnInit {
         this.buttonDisabled = true;
       }
 
+      
+      else if (x.first_player_4 > 11 && x.first_player_4 - x.second_player_4 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
 
-      //FIRST CASE - PLAYER 5
+      else if (x.second_player_4 > 11 && x.second_player_4 - x.first_player_4 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
+
+
+      //FIRST CASE - SET 5
       else if (x.first_player_5 == 10 && x.second_player_5 == 10) {
-        console.log('error 10:10');
-        errorMessage = 'error 10:10';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 10:10 in SET 5';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.first_player_5 - 1 == x.second_player_5) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 5';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.first_player_5 - x.second_player_5 > 2) {
-        console.log('error more than two result');
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result in SET 5';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
-      }
-
-      else if (x.first_player_5 > 11 && x.first_player_5 - x.second_player_5 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
-      }
-
-      else if (x.second_player_5 > 11 && x.second_player_5 - x.first_player_5 > 2) {
-        this.buttonDisabled = true;
-        this.errorMessages = [];
       }
 
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.first_player_5 == x.second_player_5) {
-        console.log('error same values')
-        errorMessage = 'error same values';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error same values in SET 5';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
-      //SECOND CASE - PLAYER 5
+      //SECOND CASE - SET 5
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.second_player_5 - 1 == x.first_player_5) {
-        console.log('error 1 difference')
-        errorMessage = 'error 1 difference';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error 1 difference in SET 5';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.second_player_5 - x.first_player_5 > 2) {
-        console.log('error more than two result')
-        errorMessage = 'error more than two result';
-        this.errorMessages.push(errorMessage);
+        errorMessage = 'Error more than two result ';
+        this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
@@ -351,18 +322,48 @@ export class HomepageComponent implements OnInit {
         this.buttonDisabled = true;
       }
 
+      
+      else if (x.first_player_5 > 11 && x.first_player_5 - x.second_player_5 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
+
+      else if (x.second_player_5 > 11 && x.second_player_5 - x.first_player_5 > 2) {
+        this.buttonDisabled = true;
+        this.errorMessages = '';
+      }
+
       else {
-        this.errorMessages = [];
+        this.errorMessages = '';
         this.buttonDisabled = false;
       }
-    })
+    });
+
   }
 
   createPlayer(): FormGroup {
     return this.formBuilder.group({
       first_name: [null, [Validators.required, Validators.maxLength(128)]],
       last_name: [null, [Validators.required, Validators.maxLength(128)]],
+      gender: ['', [Validators.required, Validators.maxLength(128)]],
+      country: [null, [Validators.required, Validators.maxLength(128)]],
+      birthday: [null, [Validators.required, Validators.maxLength(128)]],
+      fileSource: [null]
     });
+  }
+
+  onImageChange(event: any, index: any) {
+    let reader = new FileReader();
+    this.file = event.target.files[0];
+
+    reader.readAsDataURL(this.file);
+    reader.onload = () => {
+      this.fileUrl = reader.result?.toString();
+      this.Players.at(index).patchValue(this.fileUrl);
+
+      let players = this.playerForm.get('players') as FormArray;
+      players.controls[index].patchValue({ fileSource: this.fileUrl })
+    };
   }
 
   addPlayer(): void {
@@ -382,20 +383,70 @@ export class HomepageComponent implements OnInit {
   finishMatch() {
     this.form.controls['first_player'].setValue(this.pickedPlayers[0]);
     this.form.controls['second_player'].setValue(this.pickedPlayers[1]);
+
     this.matchesList.push(this.form.value);
+
+    if (this.form.value.first_player_1 > this.form.value.second_player_1) {
+      this.winsPlayer1 = this.winsPlayer1 + 1;
+    } else {
+      this.winsPlayer2 = this.winsPlayer2 + 1;
+    }
+
+    if (this.form.value.first_player_2 > this.form.value.second_player_2) {
+      this.winsPlayer1 = this.winsPlayer1 + 1;
+    } else {
+      this.winsPlayer2 = this.winsPlayer2 + 1;
+    }
+
+    if (this.form.value.first_player_3 > this.form.value.second_player_3) {
+      this.winsPlayer1 = this.winsPlayer1 + 1;
+    } else {
+      this.winsPlayer2 = this.winsPlayer2 + 1;
+    }
+
+    if (this.form.value.first_player_4 > this.form.value.second_player_4) {
+      this.winsPlayer1 = this.winsPlayer1 + 1;
+    } else {
+      this.winsPlayer2 = this.winsPlayer2 + 1;
+    }
+
+    if (this.form.value.first_player_5 > this.form.value.second_player_5) {
+      this.winsPlayer1 = this.winsPlayer1 + 1;
+    } else {
+      this.winsPlayer2 = this.winsPlayer2 + 1;
+    }
+
+    if (this.winsPlayer1 > this.winsPlayer2) {
+      this.form.value.first_player_win = true;
+    } else {
+      this.form.value.first_player_win = false;
+    }
+
+    if (this.winsPlayer2 > this.winsPlayer1) {
+      this.form.value.second_player_win = true;
+    } else {
+      this.form.value.second_player_win = false;
+    }
+
+    let type = 'winner'
+    const ref = this.dialog.open(OverviewModalComponent,{data:  type});
+    ref.componentInstance.selectedUser = this.form.value;
+
     this.pickedPlayers = [];
+    this.form.reset();
     this.matchStart = false;
+    this.winsPlayer1 = 0;
+    this.winsPlayer2 = 0;
   }
 
-  openDialogOverview(player: IUser): void {
-    const ref = this.dialog.open(OverviewModalComponent);
+  openDialogOverview(player: any, type:string): void {
+    const ref = this.dialog.open(OverviewModalComponent,{data:  type});
     ref.componentInstance.selectedUser = player;
   }
 
   togglePlayer(user: IUser) {
     let checker = false;
 
-    console.log('Picked', this.pickedPlayers)
     this.pickedPlayers.forEach((obj) => {
       if (obj === user) {
         checker = true;
@@ -413,8 +464,7 @@ export class HomepageComponent implements OnInit {
   }
 
   async finish(form: any): Promise<void> {
-    console.log(form.value);
     this.matchesList.push(form.value);
-    console.log('list', this.matchesList)
   }
+
 }

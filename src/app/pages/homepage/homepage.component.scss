@@ -2,7 +2,7 @@
     background-color: #F1F7FF;
     overflow-x: hidden;
 
-    .box{
+    .box {
         background-color: white;
         border-radius: 16px;
     }
@@ -10,7 +10,7 @@
     .btn:focus {
         outline: none;
         box-shadow: none;
-      }
+    }
 
     .btn-delete {
         img {
@@ -19,4 +19,17 @@
         }
     }
 
+    .win {
+        color: green;
+        font-weight: bold;
+    }
+
+    .logo{
+        max-width:100px;
+        max-height: 70px;
+    }
+
+    .pointer{
+        cursor: pointer;
+    }
 }

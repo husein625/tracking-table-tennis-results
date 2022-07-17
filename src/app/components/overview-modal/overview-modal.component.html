@@ -1,1 +1,71 @@
-{{selectedUser.first_name}} - {{selectedUser.last_name}}
+<div *ngIf="data == 'player'">
+    <h1> Player Overview </h1>
+
+    <div class="row">
+        <div class="col-3">
+            <b>Image:</b> <img #logoPreview [src]="selectedUser.fileSource" class="logo pointer">
+        </div>
+        <div class="col">
+            <ul>
+                <li>
+                    <b>Name:</b> {{selectedUser.first_name}}
+                </li>
+                <li>
+                    <b>Last Name:</b> {{selectedUser.last_name}}
+                </li>
+                <li>
+                    <b>Gender:</b> {{selectedUser.gender}}
+                </li>
+                <li>
+                    <b>Birthday:</b> {{selectedUser.birthday | date: 'mediumDate'}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="data == 'match'">
+    <h1> Match Overview </h1>
+
+    <table id="match">
+        <tr>
+            <th>SET</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+        </tr>
+        <tr>
+            <td>
+                <span class="win" *ngIf="selectedUser.first_player_win == true">W&nbsp;</span>
+                <b>{{selectedUser.first_player.first_name}} {{selectedUser.first_player.last_name}}</b>
+            </td>
+            <td>{{selectedUser.first_player_1}}</td>
+            <td>{{selectedUser.first_player_2}}</td>
+            <td>{{selectedUser.first_player_3}}</td>
+            <td>{{selectedUser.first_player_4}}</td>
+            <td>{{selectedUser.first_player_5}}</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="win" *ngIf="selectedUser.second_player_win == true">W&nbsp;</span>
+                <b>{{selectedUser.second_player.first_name}} {{selectedUser.second_player.last_name}}</b>
+            </td>
+            <td>{{selectedUser.second_player_1}}</td>
+            <td>{{selectedUser.second_player_2}}</td>
+            <td>{{selectedUser.second_player_3}}</td>
+            <td>{{selectedUser.second_player_4}}</td>
+            <td>{{selectedUser.second_player_5}}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="p-5 text-center" *ngIf="data == 'winner'">
+    <img src="/assets/icons/success.png" alt="">
+    <h2>WINNER IS</h2>
+    <span *ngIf="selectedUser.first_player_win == true"><b>{{selectedUser.first_player.first_name}}
+            {{selectedUser.first_player.last_name}}</b></span>
+    <span *ngIf="selectedUser.second_player_win == true"><b>{{selectedUser.second_player.first_name}}
+            {{selectedUser.second_player.last_name}}</b></span>
+</div>

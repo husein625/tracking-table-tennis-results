@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { IUser } from 'src/app/interfaces/User';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-overview-modal',
@@ -7,12 +7,10 @@ import { IUser } from 'src/app/interfaces/User';
   styleUrls: ['./overview-modal.component.scss']
 })
 export class OverviewModalComponent implements OnInit {
-  selectedUser: IUser;
+  selectedUser: any;
 
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit(): void {
-    console.log('selected user data', this.selectedUser)
-  }
+  ngOnInit(): void { }
 
 }
