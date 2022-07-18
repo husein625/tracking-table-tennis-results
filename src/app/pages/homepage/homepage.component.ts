@@ -67,13 +67,13 @@ export class HomepageComponent implements OnInit {
 
       //FIRST CASE - SET 1
       if (x.first_player_1 == 10 && x.second_player_1 == 10) {
-        errorMessage = 'Error 10:10 in SET 1';
+        errorMessage = '2 point difference needed in SET 1';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.first_player_1 - 1 == x.second_player_1) {
-        errorMessage = 'Error 1 difference in SET 1';
+        errorMessage = '2 point difference needed in SET 1';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -86,14 +86,14 @@ export class HomepageComponent implements OnInit {
 
 
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.first_player_1 == x.second_player_1) {
-        errorMessage = 'Error same values in SET 1';
+        errorMessage = '2 point difference needed in SET 1';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       //SECOND CASE - SET 1
       else if (x.first_player_1 >= 10 && x.second_player_1 >= 10 && x.second_player_1 - 1 == x.first_player_1) {
-        errorMessage = 'Error 1 difference in SET 1';
+        errorMessage = '2 point difference needed in SET 1';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -120,13 +120,13 @@ export class HomepageComponent implements OnInit {
 
       //FIRST CASE - SET 2
       else if (x.first_player_2 == 10 && x.second_player_2 == 10) {
-        errorMessage = 'Error 10:10 in SET 2';
+        errorMessage = '2 point difference needed in SET 2';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.first_player_2 - 1 == x.second_player_2) {
-        errorMessage = 'Error 1 difference in SET 2';
+        errorMessage = '2 point difference needed in SET 2';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -138,14 +138,14 @@ export class HomepageComponent implements OnInit {
       }
 
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.first_player_2 == x.second_player_2) {
-        errorMessage = 'Error same values in SET 2';
+        errorMessage = '2 point difference needed in SET 2';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       //SECOND CASE - SET 2
       else if (x.first_player_2 >= 10 && x.second_player_2 >= 10 && x.second_player_2 - 1 == x.first_player_2) {
-        errorMessage = 'Error 1 difference in SET 2';
+        errorMessage = '2 point difference needed in SET 2';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -174,13 +174,13 @@ export class HomepageComponent implements OnInit {
 
       //FIRST CASE - SET 3
       else if (x.first_player_3 == 10 && x.second_player_3 == 10) {
-        errorMessage = 'Error 10:10 in SET 3';
+        errorMessage = '2 point difference needed in SET 3';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.first_player_3 - 1 == x.second_player_3) {
-        errorMessage = 'Error 1 difference in SET 3';
+        errorMessage = '2 point difference needed in SET 3';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -193,14 +193,14 @@ export class HomepageComponent implements OnInit {
 
 
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.first_player_3 == x.second_player_3) {
-        errorMessage = 'Error same values in SET 3';
+        errorMessage = '2 point difference needed in SET 3';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       //SECOND CASE - SET 3
       else if (x.first_player_3 >= 10 && x.second_player_3 >= 10 && x.second_player_3 - 1 == x.first_player_3) {
-        errorMessage = 'Error 1 difference in SET 3';
+        errorMessage = '2 point difference needed in SET 3';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -228,13 +228,13 @@ export class HomepageComponent implements OnInit {
 
       //FIRST CASE - SET 4
       else if (x.first_player_4 == 10 && x.second_player_4 == 10) {
-        errorMessage = 'Error 10:10 in SET 4';
+        errorMessage = '2 point difference needed in SET 4';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.first_player_4 - 1 == x.second_player_4) {
-        errorMessage = 'Error 1 difference in SET 4';
+        errorMessage = '2 point difference needed in SET 4';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -246,14 +246,14 @@ export class HomepageComponent implements OnInit {
       }
 
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.first_player_4 == x.second_player_4) {
-        errorMessage = 'Error same values in SET 4';
+        errorMessage = '2 point difference needed in SET 4';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       //SECOND CASE - SET 4
       else if (x.first_player_4 >= 10 && x.second_player_4 >= 10 && x.second_player_4 - 1 == x.first_player_4) {
-        errorMessage = 'Error 1 difference in SET 4';
+        errorMessage = '2 point difference needed in SET 4';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -282,13 +282,13 @@ export class HomepageComponent implements OnInit {
 
       //FIRST CASE - SET 5
       else if (x.first_player_5 == 10 && x.second_player_5 == 10) {
-        errorMessage = 'Error 10:10 in SET 5';
+        errorMessage = '2 point difference needed in SET 5';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.first_player_5 - 1 == x.second_player_5) {
-        errorMessage = 'Error 1 difference in SET 5';
+        errorMessage = '2 point difference needed in SET 5';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -300,14 +300,14 @@ export class HomepageComponent implements OnInit {
       }
 
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.first_player_5 == x.second_player_5) {
-        errorMessage = 'Error same values in SET 5';
+        errorMessage = '2 point difference needed in SET 5';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
 
       //SECOND CASE - SET 5
       else if (x.first_player_5 >= 10 && x.second_player_5 >= 10 && x.second_player_5 - 1 == x.first_player_5) {
-        errorMessage = 'Error 1 difference in SET 5';
+        errorMessage = '2 point difference needed in SET 5';
         this.errorMessages = errorMessage;
         this.buttonDisabled = true;
       }
@@ -386,6 +386,7 @@ export class HomepageComponent implements OnInit {
 
     this.matchesList.push(this.form.value);
 
+    //CHECK WINNER OF MATCH
     if (this.form.value.first_player_1 > this.form.value.second_player_1) {
       this.winsPlayer1 = this.winsPlayer1 + 1;
     } else {
