@@ -386,7 +386,7 @@ export class HomepageComponent implements OnInit {
 
     this.matchesList.push(this.form.value);
 
-    //CHECK WINNER
+    //CHECK WINNER OF MATCH
     if (this.form.value.first_player_1 > this.form.value.second_player_1) {
       this.winsPlayer1 = this.winsPlayer1 + 1;
     } else {
